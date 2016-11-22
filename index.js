@@ -25,7 +25,7 @@ function parseTitleFormats(formats) {
  * @param {Object} summary Pass this.summary to this parameter.
  */
 function loadBookInfo(options, summary) {
-  pluginOptions = options.pluginsConfig['numbering-support'];
+  pluginOptions = options.pluginsConfig['page-numbering'];
   titleFormats = parseTitleFormats(pluginOptions.chapterFormat);
 
   var readmeFile = options.structure.readme;
@@ -82,12 +82,21 @@ function adjustLevelWithReadme(level) {
 }
 
 /**
- * Obtain the chapter number of a page.
+ * Obtain the chapter number of a page. If depth is zero, return the whole
+ * chapter number. If depth is positive, return the numbering up to the
+ * specified depth, counted from the left. If depth negative, the numbering
+ * minus the specified depth.
+ *
+ * For consistency with GitBook, the depth is always counted with the part
+ * number, even if it is omitted in the output. This function returns an empty
+ * string if all parts of the chapter number are omitted.
+ *
  * @param {Object} page
+ * @param {number} depth
  * @returns {string}
  */
-function getChapterNumber(page) {
-  var level = page.level.slice();
+function getChapterNumber(page, depth = 0) {
+  var level = depth ? page.level.slice(0, depth) : page.level.slice();
   if (pluginOptions.skipReadme)
     level = adjustLevelWithReadme(level);
   if (!pluginOptions.forceMultipleParts)
@@ -121,8 +130,8 @@ module.exports = {
     autotitle: function(block) {
       return getTitle(currentPage, block.body);
     },
-    autochapter: function() {
-      return getChapterNumber(currentPage);
+    autochapter: function(block) {
+      return getChapterNumber(currentPage, parseInt(block.body, 10));
     }
   },
   hooks: {

@@ -1,10 +1,10 @@
 {
   "name": "gitbook-plugin-page-numbering",
-  "version": "0.0.1",
-  "description": "Add support for numbering pages, table, figures, etc... in GitBook.",
-  "homepage": "[todo]",
+  "version": "0.1.1",
+  "description": "Add support for automatic numbering of pages, table, figures, etc... in GitBook.",
+  "homepage": "https://github.com/lwchkg/gitbook-plugin-page-numbering",
   "bugs": {
-    "url" : "[todo]",
+    "url" : "https://github.com/lwchkg/gitbook-plugin-page-numbering/issues",
     "email" : "lwchkg@gmail.com"
   },
   "license": "GPLv3",
@@ -13,7 +13,7 @@
   ],
   "repository" : {
     "type" : "git",
-    "url" : "[todo]"
+    "url" : "https://github.com/lwchkg/gitbook-plugin-page-numbering"
   },
   "engines": {
     "gitbook": ">=3.0.0"
@@ -23,17 +23,17 @@
       "skipReadme": {
         "type": "boolean",
         "default": false,
-        "description": "Skip README.md or README.adoc in the numbering."
+        "description": "Skip the book readme file (usually README.md) in the numbering."
       },
       "chapterFormat": {
         "type": "string",
         "default": "Chapter #chapno#&nbsp;&nbsp;&nbsp;#title# ||| #chapno#&nbsp;&nbsp;&nbsp;#title#",
-        "description": "The automatic heading used for chapters. Use #chapno# for the numbering, and #title# for the title. If different headings are used in different depths, use ||| to separate automatic headings in different depths."
+        "description": "The automatic headings used for chapters. Use #chapno# for the numbering, and #title# for the title. If different headings are used in different depths, use ||| to separate automatic headings in different depths."
       },
       "forceMultipleParts": {
         "type": "boolean",
         "default": false,
-        "description": "Force multiple-part numberings. If false, the part number is skipped if there is only a single part."
+        "description": "Force multiple-part numberings. If false, the part number is skipped if the book consists of only a single part."
       }
     }
   }
