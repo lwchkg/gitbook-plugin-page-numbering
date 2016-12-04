@@ -1,22 +1,22 @@
 'use strict';
 
 // global variables for the whole book
-var pluginOptions;
-var titleFormats;
-var isMultiPart;
-var readmeLevel;
-var readmeDepth;
+let pluginOptions;
+let titleFormats;
+let isMultiPart;
+let readmeLevel;
+let readmeDepth;
 
 // global variables for the current page
-var currentPage;
+let currentPage;
 
 /**
  * Split and trim the chapter formats.
- * @param {string} formats
- * @returns {string[]}
+ * @param {string} formats The chapter formats delimited by '|||'.
+ * @returns {string[]} The chapter formats in an array.
  */
 function parseTitleFormats(formats) {
-  return formats.split('|||').map(s => s.trim());
+  return formats.split('|||').map((s) => s.trim());
 }
 
 /**
@@ -28,8 +28,8 @@ function loadBookInfo(options, summary) {
   pluginOptions = options.pluginsConfig['page-numbering'];
   titleFormats = parseTitleFormats(pluginOptions.chapterFormat);
 
-  var readmeFile = options.structure.readme;
-  var readme = summary.getArticleByPath(readmeFile);
+  const readmeFile = options.structure.readme;
+  let readme = summary.getArticleByPath(readmeFile);
   if (!readme && readmeFile === 'README.md')
     readme = summary.getArticleByPath('README.adoc');
   readmeLevel = readme.level.split('.');
@@ -38,7 +38,7 @@ function loadBookInfo(options, summary) {
   isMultiPart = pluginOptions.forceMultipleParts;
   if (isMultiPart)
     return;
-  summary.walk(article => {
+  summary.walk((article) => {
     if (article.level.split('.')[0] > 1) {
       isMultiPart = true;
       return false;
@@ -69,7 +69,7 @@ function adjustLevelWithReadme(level) {
   if (readmeDepth > level.length)
     return level;
 
-  var i = 0;
+  let i = 0;
   while (i < readmeDepth - 1) {
     if (readmeLevel[i] !== level[i])
       return level;
@@ -96,10 +96,10 @@ function adjustLevelWithReadme(level) {
  * @returns {string}
  */
 function getChapterNumber(page, depth = 0) {
-  var level = depth ? page.level.slice(0, depth) : page.level.slice();
+  let level = depth ? page.level.slice(0, depth) : page.level.slice();
   if (pluginOptions.skipReadme)
     level = adjustLevelWithReadme(level);
-  if (!pluginOptions.forceMultipleParts)
+  if (!isMultiPart)
     level.splice(0, 1);
   return level.join('.');
 }
@@ -108,13 +108,13 @@ function getChapterNumber(page, depth = 0) {
  * Obtain the title of a page. If formatOverride is an empty string, the format
  * in the plugin properties is used.
  * @param {Object} page
- * @param {string} format
+ * @param {string} [formatOverride]
  * @returns {string}
  */
 function getTitle(page, formatOverride) {
-  var format = formatOverride.trim().length ? parseTitleFormats(formatOverride)
-                                            : titleFormats;
-  var index = page.level.length - 2;
+  const format = formatOverride.trim().length
+                     ? parseTitleFormats(formatOverride) : titleFormats;
+  let index = page.level.length - 2;
   if (index < 0)
     index = 0;
   else if (index >= format.length)
@@ -131,14 +131,14 @@ module.exports = {
       return getTitle(currentPage, block.body);
     },
     autochapter: function(block) {
-      return getChapterNumber(currentPage, parseInt(block.body, 10));
-    }
+      return getChapterNumber(currentPage, parseInt(block.body));
+    },
   },
   hooks: {
     'init': function() { loadBookInfo(this.options, this.summary); },
     'page:before': function(page) {
       loadCurrentPageInfo(page);
       return page;
-    }
-  }
+    },
+  },
 };
