@@ -1,6 +1,6 @@
 {
   "name": "gitbook-plugin-page-numbering",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Add support for automatic numbering of pages, table, figures, etc... in GitBook.",
   "homepage": "https://github.com/lwchkg/gitbook-plugin-page-numbering",
   "bugs": {
