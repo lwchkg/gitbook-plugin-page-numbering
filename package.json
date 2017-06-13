@@ -1,19 +1,20 @@
 {
   "name": "gitbook-plugin-page-numbering",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add support for automatic numbering of pages, table, figures, etc... in GitBook.",
   "homepage": "https://github.com/lwchkg/gitbook-plugin-page-numbering",
   "bugs": {
-    "url" : "https://github.com/lwchkg/gitbook-plugin-page-numbering/issues",
-    "email" : "lwchkg@gmail.com"
+    "url": "https://github.com/lwchkg/gitbook-plugin-page-numbering/issues",
+    "email": "lwchkg@gmail.com"
   },
+  "main": "babel-out/index.js",
   "license": "GPLv3",
   "contributors": [
     "WC Leung <lwchkg@gmail.com>"
   ],
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/lwchkg/gitbook-plugin-page-numbering"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lwchkg/gitbook-plugin-page-numbering"
   },
   "engines": {
     "gitbook": ">=3.0.0"
@@ -36,5 +37,12 @@
         "description": "Force multiple-part numberings. If false, the part number is skipped if the book consists of only a single part."
       }
     }
+  },
+  "scripts": {
+    "compile": "babel --presets env -d babel-out/ src/",
+    "prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.5.2"
   }
 }
